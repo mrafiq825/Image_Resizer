@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SleekScale - Premium Image Resizer</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Style Sheet -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Frontend Logic -->
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+    <!-- Background Decorative Glows -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 14V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V14" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M12 3V15M12 15L8 11M12 15L16 11" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="logoGrad" x1="4" y1="3" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#8B5CF6" />
+                            <stop offset="1" stop-color="#EC4899" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>SleekScale</span>
+            </div>
+            <h1>Perfect Pixels, Instantly</h1>
+            <p class="subtitle">Drag, resize, convert, and compress. Processing happens securely in your environment with professional grade tools.</p>
+        </header>
+
+        <main class="app-main">
+            <!-- Stage 1: Upload Dropzone -->
+            <section id="uploadSection" class="upload-card active">
+                <div class="dropzone" id="dropzone">
+                    <input type="file" id="fileInput" accept="image/*" class="file-input-hidden">
+                    <div class="dropzone-content">
+                        <div class="upload-icon-container">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="cloud-icon">
+                                <path d="M12 16V9M12 9L9 12M12 9L15 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 16.9C20.2 16 21 14.6 21 13C21 10.8 19.2 9 17 9C16.9 9 16.7 9 16.6 9C16 6.2 13.5 4 10.5 4C6.9 4 4 6.9 4 10.5C4 11.2 4.1 12 4.4 12.6C2.9 13.5 2 15.1 2 17C2 19.8 4.2 22 7 22H18C20.2 22 22 20.2 22 18C22 17.6 21.9 17.2 21.8 16.9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h3>Drag and drop your image here</h3>
+                        <p class="dropzone-sub">or click to browse from files</p>
+                        <span class="badge">Supports JPG, PNG, WEBP up to 10MB</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stage 2: Configuration & Preview Workspace -->
+            <section id="workspaceSection" class="workspace-card">
+                <div class="workspace-grid">
+                    <!-- Preview Panel (Left) -->
+                    <div class="preview-panel glass-panel">
+                        <div class="panel-header">
+                            <h4>Original Image</h4>
+                            <span class="file-size-badge" id="originalSizeBadge">-- KB</span>
+                        </div>
+                        <div class="preview-container">
+                            <img id="originalPreview" alt="Original preview" src="">
+                        </div>
+                        <div class="meta-info-grid">
+                            <div class="meta-item">
+                                <span class="meta-label">Filename</span>
+                                <span class="meta-val" id="metaFilename">image.png</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Original Resolution</span>
+                                <span class="meta-val" id="metaResolution">0 × 0 px</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Options & Controls Panel (Right) -->
+                    <div class="controls-panel glass-panel">
+                        <div class="panel-header">
+                            <h4>Resize Configurations</h4>
+                        </div>
+                        
+                        <form id="resizeForm" class="options-form">
+                            <!-- Dimensions -->
+                            <div class="form-group">
+                                <label class="input-label">Target Dimensions</label>
+                                <div class="dimensions-row">
+                                    <div class="dimension-input-wrapper">
+                                        <input type="number" id="widthInput" name="width" placeholder="Width" min="1" required>
+                                        <span class="unit">W (px)</span>
+                                    </div>
+                                    <button type="button" class="aspect-ratio-btn active" id="aspectRatioBtn" title="Lock Aspect Ratio">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path id="lockPath" d="M12 15V17M17 11V7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7V11M5 11H19C20.1046 11 21 11.8954 21 13V20C21 21.1046 20.1046 22 19 22H5C3.89543 22 3 21.1046 3 20V13C3 11.8954 3.89543 11 5 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                    <div class="dimension-input-wrapper">
+                                        <input type="number" id="heightInput" name="height" placeholder="Height" min="1" required>
+                                        <span class="unit">H (px)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Format Selection -->
+                            <div class="form-group">
+                                <label class="input-label">Output Format</label>
+                                <div class="format-toggle-group">
+                                    <label class="format-option">
+                                        <input type="radio" name="format" value="jpeg" checked>
+                                        <span>JPEG</span>
+                                    </label>
+                                    <label class="format-option">
+                                        <input type="radio" name="format" value="png">
+                                        <span>PNG</span>
+                                    </label>
+                                    <label class="format-option">
+                                        <input type="radio" name="format" value="webp">
+                                        <span>WEBP</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Quality slider -->
+                            <div class="form-group" id="qualityGroup">
+                                <div class="quality-label-row">
+                                    <label class="input-label">Compression Quality</label>
+                                    <span class="quality-value" id="qualityVal">80%</span>
+                                </div>
+                                <input type="range" id="qualityInput" name="quality" min="1" max="100" value="80" class="slider">
+                                <div class="slider-helper">
+                                    <span>Max Compression</span>
+                                    <span>Best Quality</span>
+                                </div>
+                            </div>
+
+                            <!-- Processing Action -->
+                            <button type="submit" class="action-btn" id="processBtn">
+                                <span>Resize Image</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="workspace-footer">
+                    <button type="button" class="back-link-btn" id="changeImageBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Choose another image
+                    </button>
+                </div>
+            </section>
+
+            <!-- Stage 3: Download Panel -->
+            <section id="downloadSection" class="download-card">
+                <div class="success-illustration">
+                    <div class="success-ring">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <h2>Resize Completed!</h2>
+                <p class="download-sub">Your image was processed successfully. You can download the output file below.</p>
+
+                <div class="stats-summary glass-panel">
+                    <div class="stat-box">
+                        <span class="stat-lbl">Original</span>
+                        <span class="stat-val" id="successOrigStats">1200 × 800 (430 KB)</span>
+                    </div>
+                    <div class="divider">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-boxHighlight">
+                        <span class="stat-lbl">Optimized</span>
+                        <span class="stat-val" id="successNewStats">750 × 500 (45 KB)</span>
+                    </div>
+                </div>
+
+                <div class="download-actions">
+                    <a href="#" id="downloadLink" download="resized-image.jpg" class="action-btn download-btn">
+                        <span>Download Resized Image</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 16V17C4 18.6569 5.34315 20 7 20H17C18.6569 20 20 18.6569 20 17V16M12 4V14M12 14L8 10M12 14L16 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                    <button type="button" class="secondary-btn" id="startOverBtn">
+                        <span>Resize Another Image</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading Modal Overlay -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <p id="loadingText">Processing image...</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer-note">
+            <p>&copy; 2026 SleekScale Image processing toolkit. Built with Express, Sharp, and pure CSS glassmorphism.</p>
+        </footer>
+    </div>
+</body>
+</html>
